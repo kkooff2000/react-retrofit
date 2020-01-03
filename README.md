@@ -1,5 +1,16 @@
 # react-retrofit
 A Retrofit like axios implementation for react native
+
+# Setup babel.config.js
+```js
+{
+    plugins: [
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose" : true }]
+    ]
+}
+```
+
 # Usage
 ```js
 import { GET, TOKEN, AUTH, HOST, ON_REFRESH_TOKEN } from 'react-retrofit'
@@ -15,18 +26,18 @@ class API {
     */
   @AUTH('/oauth')
   auth(data) {
-    //api callback
+    //transform data
     return {access_token:data.access_token, refresh_token:data.refresh_token}
   }
 
   //This will be called when status 401 occurred
-  //Please return axios or promise with access_token
+  //Please return axios or promise with access_token refresh_token is optional
   @ON_REFRESH_TOKEN()
   refreshToken(refreshToken) {
     return axios({
       method: 'post',
       url: "http://xxx.xxx.com/oauth?grant_type=refresh_token&refresh_token="+refreshToken,
-    }).then(result => result.data.access_token)
+    }).then(result => { return { access_token: result.data.access_token } })
   }
 
   /**
@@ -35,8 +46,9 @@ class API {
     */
   @GET('/me')
   me(info) {
-      //api callback
-      console.log(data)
+    //transform data
+    console.log(info)
+    return info
   }
 
   /**
@@ -46,13 +58,22 @@ class API {
   @GET('/photo')
   @TOKEN //This will pass access_token to url automatically if @AUTH has been called
   photo(photo) {
-      //api callback
-      console.log(photo)
+    //transform data
+    console.log(photo)
+    return photo
   }
 }
 
 const api = new API()
 api.auth()
-api.me(info => console.log(info))
-api.photo(photo => console.log(photo))
+
+api.me().then(info => {
+    //data you transform
+    console.log(info)
+})
+
+api.photo().then(photo => {
+    //data you transform
+    console.log(photo)
+})
 ```
