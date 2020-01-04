@@ -11,20 +11,18 @@ A Retrofit like axios implementation for react native
 }
 ```
 
-# Usage
+# Network Usage
 ```js
-import { GET, TOKEN, AUTH, HOST, ON_REFRESH_TOKEN } from 'react-retrofit'
+import { Get, Token, Auth, OnRefresh } from 'react-retrofit'
 import axios from 'axios'
 class API {
-  //Set HOST
-  @HOST("http://xxx.xxx.com")
 
   // pass access_token to API refresh_token is optional
   /**
-    * @param {string} auth endpoint
+    * @param {string} auth url
     * @param {{...}} axios config
     */
-  @AUTH('/oauth')
+  @AUTH('host/oauth')
   auth(data) {
     //transform data
     return {access_token:data.access_token, refresh_token:data.refresh_token}
@@ -32,7 +30,7 @@ class API {
 
   //This will be called when status 401 occurred
   //Please return axios or promise with access_token refresh_token is optional
-  @ON_REFRESH_TOKEN()
+  @OnRefresh()
   refreshToken(refreshToken) {
     return axios({
       method: 'post',
@@ -41,10 +39,10 @@ class API {
   }
 
   /**
-    * @param {string} endpoint
+    * @param {string} url
     * @param {{...}} config (axios config)
     */
-  @GET('/me')
+  @Get('host/me')
   me(info) {
     //transform data
     console.log(info)
@@ -52,11 +50,11 @@ class API {
   }
 
   /**
-    * @param {string} endpoint
+    * @param {string} url
     * @param {{...}} config (axios config)
     */
-  @GET('/photo')
-  @TOKEN //This will pass access_token to url automatically if @AUTH has been called
+  @Get('/photo')
+  @Token //This will pass access_token to url automatically if @AUTH has been called
   photo(photo) {
     //transform data
     console.log(photo)
@@ -76,4 +74,22 @@ api.photo().then(photo => {
     //data you transform
     console.log(photo)
 })
+```
+
+# FlatList Usage
+```js
+import { FlatList } from 'react-retrofit'
+import React, {Text} from 'react'
+class App extends React.Component {
+    const itemView = ({name}) => <Text>{name}</Text>
+
+
+    @FlatList("Main","host/endpoint",itemView)
+
+    //api return like [{"name":"Harry"},{"name":"Billy"}]. Attributes will auto bind to itemView
+
+    render() {
+        <this.Main />
+    }
+}
 ```
