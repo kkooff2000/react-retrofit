@@ -16,17 +16,19 @@
     "url": "https://github.com/kkooff2000/react-retrofit"
   },
   "homepage": "https://github.com/kkooff2000/react-retrofit#readme",
-  "dependencies": {
-    "axios":"0.19.0",
+  "peerDependencies": {
     "react": "16.9.0",
-    "react-native": "0.61.5",
-    "@react-native-community/async-storage":"^1.7.1"
+    "react-native": "0.61.5"
+  },
+  "dependencies": {
+    "axios": "0.19.0",
+    "@react-native-community/async-storage": "^1.7.1"
   },
   "devDependencies": {
     "@babel/core": "7.7.4",
     "@babel/runtime": "7.7.4",
-    "@babel/plugin-proposal-decorators":"7.7.4",
-    "@babel/plugin-proposal-class-properties":"7.7.4",
+    "@babel/plugin-proposal-decorators": "7.7.4",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
     "@babel/plugin-transform-runtime": "7.7.4"
   },
   "author": "kkooff2000",

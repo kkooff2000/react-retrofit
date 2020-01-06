@@ -16,12 +16,9 @@ A Retrofit like axios implementation for react native
 
 # Setup babel.config.js
 ```js
-{
-    plugins: [
-        ["@babel/plugin-proposal-decorators", { "legacy": true }],
-        ["@babel/plugin-proposal-class-properties", { "loose" : true }]
-    ]
-}
+  plugins: [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  ]
 ```
 
 # Network Usage
@@ -91,11 +88,11 @@ api.photo().then(photo => {
 
 # FlatList Usage
 ```js
-import { FlatList } from 'react-retrofit'
+import { List } from 'react-retrofit'
 import React, {Text} from 'react'
 class App extends React.Component {
 
-    const itemView = ({name}) => <Text>{name}</Text>
+    const item = ({ name }) => { return (<Text>{name}</Text>) }
 
     /**
       * @param {React.Component} component
@@ -103,7 +100,7 @@ class App extends React.Component {
       * @param {React.Component} listItem
       * @param {{axiosConfig: object, flatConfig: object, indicator: React.Component}} config
       */
-    @FlatList("Main","host/endpoint",itemView)
+    @List("Main", "host/endpoint", item)
 
     //api return like [{"name":"Harry"},{"name":"Billy"}]. Attributes will auto bind to itemView
 

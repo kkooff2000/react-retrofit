@@ -3,9 +3,9 @@ import {
     , OnRefreshToken, Token
 } from './lib/retrofit'
 
-import { FlatList } from './lib/flatList'
+import { List } from './lib/flatList'
 
 export {
     Get, Post, Put, Update, Delete, Auth, OnRefreshToken
-    , Token, FlatList
+    , Token, List
 }
