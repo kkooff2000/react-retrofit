@@ -8,9 +8,7 @@ A Retrofit like axios implementation for react native
     "@react-native-community/async-storage":"^1.7.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators":"^7.7.4",
-    "@babel/plugin-proposal-class-properties":"^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.4"
+    "@babel/plugin-proposal-decorators":"^7.7.4"
   },
 ```
 
@@ -29,9 +27,9 @@ class API {
 
   // pass access_token to API refresh_token is optional
   /**
-    * @param {string} auth url
-    * @param {{...}} axios config
-    */
+    * @param {string} url
+    * @param {AxiosRequestConfig} config
+  */
   @AUTH('host/oauth')
   auth(data) {
     //transform data
@@ -50,8 +48,8 @@ class API {
 
   /**
     * @param {string} url
-    * @param {{...}} config (axios config)
-    */
+    * @param {AxiosRequestConfig} config
+  */
   @Get('host/me')
   me(info) {
     //transform data
@@ -61,8 +59,8 @@ class API {
 
   /**
     * @param {string} url
-    * @param {{...}} config (axios config)
-    */
+    * @param {AxiosRequestConfig} config
+  */
   @Get('/photo')
   @Token //This will pass access_token to url automatically if @AUTH has been called
   photo(photo) {
@@ -98,9 +96,55 @@ class App extends React.Component {
       * @param {React.Component} component
       * @param {string} url
       * @param {React.Component} listItem
-      * @param {{axiosConfig: object, flatConfig: object, indicator: React.Component}} config
+      * @param {RetrofitConfig} config
       */
     @List("Main", "host/endpoint", item)
+
+    //api return like [{"name":"Harry"},{"name":"Billy"}]. Attributes will auto bind to itemView
+
+    render() {
+        <this.Main />
+    }
+}
+```
+
+# FlatList With API Usage
+```js
+import React, {Text} from 'react'
+import { List, ListWithAPI, Get } from 'react-retrofit'
+
+class API {
+
+  id = 0
+
+  @Get('http://host/endpoint/')
+  fetchData(data) {
+    return data
+  }
+
+  fetchMore = () => {
+    this.page += 1
+    return axios({
+      url: 'http://host/endpoint/'
+        + this.id, method: 'GET'
+    }).then(result => result.data)
+  }
+}
+
+const api = new API()
+
+class App extends React.Component {
+
+    const item = ({ name }) => { return (<Text>{name}</Text>) }
+
+    /**
+      * @param {React.Component} component
+      * @param {function name(data) {}} fetchAPI
+      * @param {function name(data) {}} fetchNextAPI
+      * @param {React.Component} listItem
+      * @param {RetrofitConfig} config
+      */
+    @ListWithAPI("Main", api.fetchData, api.fetchMore, item)
 
     //api return like [{"name":"Harry"},{"name":"Billy"}]. Attributes will auto bind to itemView
 
