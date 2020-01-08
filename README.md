@@ -38,7 +38,7 @@ class API {
 
   //This will be called when status 401 occurred
   //Please return axios or promise with access_token refresh_token is optional
-  @OnRefresh()
+  @OnRefreshToken()
   refreshToken(refreshToken) {
     return axios({
       method: 'post',
@@ -122,12 +122,10 @@ class API {
     return data
   }
 
-  fetchMore = () => {
-    this.page += 1
-    return axios({
-      url: 'http://host/endpoint/'
-        + this.id, method: 'GET'
-    }).then(result => result.data)
+  @Get('http://host/endpoint/{id}')
+  fetchMore(data) {
+    this.id += 1
+    return data
   }
 }
 
